@@ -1,0 +1,21 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: grpc-hello-app
+  labels:
+    app: grpc-hello
+spec:
+  containers:
+    - name: grpc-hello
+      image: nagakaravadi/grpc-hello
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: grpc-hello-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: grpc-hello
+  ports:
+    - port: 8999

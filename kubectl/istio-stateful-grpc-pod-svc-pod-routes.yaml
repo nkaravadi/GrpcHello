@@ -13,7 +13,7 @@ spec:
       name: grpc
       protocol: grpc
     hosts:
-    - "*"
+    - "*.local.com"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: ServiceEntry
@@ -33,10 +33,10 @@ spec:
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
-  name: s-grpc-hello-vs
+  name: s-grpc-hello-vs-abc
 spec:
   hosts:
-  - "*"
+  - abc.local.com
   gateways:
   - s-grpc-hello-gateway
   http:
@@ -49,6 +49,17 @@ spec:
         host: s-grpc-hello-0.s-grpc-hello-service.default.svc.cluster.local
         port:
           number: 8999
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: s-grpc-hello-vs-def
+spec:
+  hosts:
+  - def.local.com
+  gateways:
+  - s-grpc-hello-gateway
+  http:
   - match:
     - headers:
         instance:
@@ -58,3 +69,4 @@ spec:
         host: s-grpc-hello-1.s-grpc-hello-service.default.svc.cluster.local
         port:
           number: 8999
+

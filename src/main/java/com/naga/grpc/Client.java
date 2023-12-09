@@ -6,7 +6,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
 public class Client {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         String name = System.getenv("name");
         if (name == null || name.isEmpty()) {
             name = "World";
@@ -24,11 +24,14 @@ public class Client {
 
         int port = Integer.parseInt(portStr);
 
-        ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
-        GreeterGrpc.GreeterBlockingStub greeterStub = GreeterGrpc.newBlockingStub(channel);
-        Hello.HelloReply reply = greeterStub.sayHello(Hello.HelloRequest.newBuilder().setName(name).build());
 
-        System.out.println("Got Response:");
-        System.out.println(reply.getMessage());
+        while(true) {
+            ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port).usePlaintext().build();
+            GreeterGrpc.GreeterBlockingStub greeterStub = GreeterGrpc.newBlockingStub(channel);
+            Hello.HelloReply reply = greeterStub.sayHello(Hello.HelloRequest.newBuilder().setName(name).build());
+            System.out.println("Got Response:");
+            System.out.println(reply.getMessage());
+            Thread.sleep(10000);
+        }
     }
 }

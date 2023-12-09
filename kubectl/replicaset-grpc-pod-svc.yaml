@@ -1,0 +1,40 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: s-grpc-hello-service
+spec:
+  clusterIP: None
+  selector:
+    app: s-grpc-hello
+  ports:
+    - port: 8999
+      name: http2
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: s-grpc-hello
+  labels:
+    app: s-grpc-hello
+spec:
+  serviceName: s-grpc-hello-service
+  replicas: 2
+  selector:
+    matchLabels:
+      app: s-grpc-hello
+  template:
+    metadata:
+      labels:
+        app: s-grpc-hello
+    spec:
+      containers:
+      - name: s-grpc-hello
+        image: nagakaravadi/grpc-hello
+        ports:
+        - containerPort: 8999
+          name: s-grpc-hello
+        env:
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name

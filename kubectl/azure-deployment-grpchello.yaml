@@ -1,0 +1,37 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: grpc-hello-service
+spec:
+  clusterIP: None
+  selector:
+    app: grpc-hello
+  ports:
+    - port: 8999
+      name: grpc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-hello-dep
+  labels:
+    app: grpc-hello
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: grpc-hello
+  template:
+    metadata:
+      labels:
+        app: grpc-hello
+    spec:
+      containers:
+        - name: grpc-hello
+          image: nagakaravadi/grpc-hello
+          ports:
+            - containerPort: 8999
+          resources:
+            limits:
+              memory: "64Mi"
+              cpu: "500m"

@@ -16,7 +16,7 @@ public class Main {
             Client.main(args);
         } else {
             //Get path of cert file from env or use default
-            String certFilePath = System.getenv("ç");
+            String certFilePath = System.getenv("certFile");
             if (certFilePath == null || certFilePath.isEmpty()) {
                 certFilePath = "/Users/nagakaravadi/dev/OpenShift/tls.crt";
             }

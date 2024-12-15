@@ -7,8 +7,10 @@ spec:
   selector:
     app: grpc-hello
   ports:
-    - port: 8999
+    - port: 9443
       name: grpc
+      protocol: TCP
+      targetPort: 8999
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -29,8 +31,6 @@ spec:
       containers:
         - name: grpc-hello
           image: nagakaravadi/grpc-hello
-          ports:
-            - containerPort: 8999
           resources:
             limits:
               memory: "64Mi"

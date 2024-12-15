@@ -1,0 +1,33 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: grpc-hello-ingress
+  namespace: nkaravadi-dev
+  annotations:
+    ingress.operator.openshift.io/default-enable-http2: 'true'
+spec:
+  tls:
+    - hosts:
+        - grpc-hello-route-nkaravadi-dev.apps.sandbox-m4.g2pi.p1.openshiftapps.com
+      secretName: my-tls-secret
+  rules:
+    - host: grpc-hello-route-nkaravadi-dev.apps.sandbox-m4.g2pi.p1.openshiftapps.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: grpc-hello-service
+                port:
+                  number: 8999
+    - host: grpc-hello-route-http-nkaravadi-dev.apps.sandbox-m4.g2pi.p1.openshiftapps.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: grpc-hello-service
+                port:
+                  number: 8999

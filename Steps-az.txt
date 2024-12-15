@@ -1,4 +1,11 @@
 1. Create K8s cluster in Azure (use terraform steps for 2 node cluster)
+  1.0 Summary:
+    az login
+    cd /Users/nagakaravadi/IdeaProjects/TerraformDemo/terraform/demo
+    terraform init -upgrade
+    terraform plan -out main.tfplan
+    terraform apply "main.tfplan"  
+
   1.1 set up kubectl with 
     az aks get-credentials --resource-group tf-demo-rg --name tf-demo-cluster
 
@@ -10,11 +17,14 @@ kubectl label namespace default istio-injection=enabled
 k apply -f kubectl/azure-deployment-grpchello.yaml
 
 3.1 Check that sidecars are installed
-k get pods grpc-hello-dep-594b574f8b-4brds -o jsonpath='{.spec.containers[*].name}'
+k get pods
+#pick one
+k get pods `k get pods | grep grpc-hello | awk '{print $1}'  | head -1` -o jsonpath='{.spec.containers[*].name}'
+#k get pods grpc-hello-dep-594b574f8b-4brds -o jsonpath='{.spec.containers[*].name}'
 
 3.2 Deploy Gateway & Virtual Services
-azure-gateway.yaml
-azure-vs-grpchello.yaml
+k apply -f kubectl/azure-gateway.yaml
+k apply -f kubectl/azure-vs-grpchello.yaml
 
 4. Check if port forward works for the pod
     k get svc grpc-hello-service -o=wide
@@ -46,5 +56,7 @@ k apply -f kubectl/azure-vs-grpchello.yaml
 #export RESOURCE_GROUP=tf-demo-rg
 #export CLUSTER=tf-demo-cluster
 #az aks mesh enable-ingress-gateway --resource-group $RESOURCE_GROUP --name $CLUSTER --ingress-gateway-type external
+
+k get svc -n istio-system
 
 

@@ -72,3 +72,6 @@ istioctl analyze
 
 kind delete cluster --name kind-multi-node
 colima stop
+
+
+#Complete testing

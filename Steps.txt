@@ -10,12 +10,12 @@ colima start --memory 6
 kind create cluster --config kind/kind-config.yaml
 
 #Set up Colima/Kind networking so it works like AKS
-./SetupNetWorking.sh 
+./SetupNetWorking.sh
 
 #Setup the Load Balancer
 kubectl apply -f metallb/metallb-native.yaml
 kubectl wait --namespace metallb-system --for=condition=ready pod --selector=app=metallb --timeout=90s
-kubectl apply -f metallb/metallb-conf.yaml 
+kubectl apply -f metallb/metallb-conf.yaml
 
 #Setup istio with nice defaults
 istioctl install --set profile=demo -y
@@ -60,7 +60,7 @@ istioctl analyze
 # Check OpenLens
 
 # Postman requests :
-#     
+#
 
 
 
@@ -74,4 +74,4 @@ kind delete cluster --name kind-multi-node
 colima stop
 
 
-#Complete testing
+#Complete testing after the above steps
